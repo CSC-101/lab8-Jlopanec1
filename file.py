@@ -1,26 +1,34 @@
 import sys
 
 def main():
-    if len(sys.argv) < 2:
-        print("Error: Please provide the name of the file to open.")
+    # Check if a file name is provided as a command-line argument
+    if len(sys.argv) != 2:
+        print("Error: Please provide the name of a file to read.")
         sys.exit(1)
-    sample_file = sys.argv[1]
+
+    filename = sys.argv[1]
+
     try:
-        with open(sample_file) as file:
+        with open(filename, 'r') as file:
             for line in file:
                 line = line.strip()
+                parts = line.split()
+                if len(parts) != 2:
+                    print(f"Error: Line does not contain exactly two values: {line}")
+                    continue
                 try:
-                    values = line.split()
-                    if len(values) != 2:
-                        print(f"Error: Line must contain exactly two values: {line}")
-                        continue
-                    num1, num2 = map(float, line.split())
-                    print(f"Sum of {num1} and {num2} is {num1 + num2}")
+
+                    value1 = float(parts[0])
+                    value2 = float(parts[1])
+
+                    print(f"The sum of {value1} and {value2} is {value1 + value2}")
+
                 except ValueError:
-                    print(f"Error: Invalid number in line - {line}")
+
+                    print(f"Error: Could not convert values to floats: {line}")
                     continue
     except FileNotFoundError:
-        print(f"Error: The file '{sample_file}' could not be found.")
+        print(f"Error: File '{filename}' not found.")
         sys.exit(1)
 if __name__ == "__main__":
     main()
